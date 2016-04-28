@@ -29,10 +29,10 @@ namespace DirViewProject.Api
             {
                 return SeeDrives();
             }
-            Models.Directory directory;
+          
             try
             {
-                directory = SeeDir(item.Path);
+                var directory = SeeDir(item.Path);
                 if (directory == null)
                     throw new HttpResponseException(HttpStatusCode.NotFound);
                 return directory;
