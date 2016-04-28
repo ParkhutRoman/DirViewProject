@@ -27,7 +27,7 @@ namespace DirViewProject.Api
             {
                 return Open(filepath);
             }
-            ViewBag.Title = "Home Page";
+            ViewData["Title"] = "Home Page";
             return View(new Models.Directory());
         }
     }

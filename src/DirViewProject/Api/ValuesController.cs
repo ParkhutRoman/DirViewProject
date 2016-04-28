@@ -1,5 +1,7 @@
 ﻿using DirViewProject.Enum;
 using Microsoft.AspNet.Mvc;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,10 +29,21 @@ namespace DirViewProject.Api
             {
                 return SeeDrives();
             }
-            var directory = SeeDir(item.Path);
-            if (directory == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            return directory;
+            Models.Directory directory;
+            try
+            {
+                directory = SeeDir(item.Path);
+                if (directory == null)
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
+                return directory;
+            }
+            catch (Exception x)
+            {
+                Debug.WriteLine($"Ex in - Models.Directory Get({item.Path}) - {x.Message}");
+                throw x;
+            }
+
+
         }
 
         private Models.Directory SeeDrives()
@@ -54,7 +67,16 @@ namespace DirViewProject.Api
             var dirInfo = new DirectoryInfo(path);
             if (!dirInfo.Exists)
                 return null;
-            var files = dirInfo.GetFiles();
+            FileInfo[] files;
+            try
+            {
+                files = dirInfo.GetFiles();
+            }
+            catch (Exception x)
+            {
+                Debug.WriteLine($"Ex in - Models.Directory SeeDir({path}) - {x.Message}");
+                throw x;
+            }
             var dirs = dirInfo.GetDirectories();
             var directory = new Models.Directory();
             directory.Files = (from file in files
