@@ -1,0 +1,32 @@
+﻿<script src="~/bundles/angular.js"></script>
+<script src="~/bundles/angular-resource.js"></script>
+<script src="~/bundles/app.js"></script>
+<div ng-app="dirViewApp">
+    <div ng-controller="dirController">
+        <table class="col-md-4 table table-condensed counts-table">
+            <thead>
+                <tr>
+                    <th>Size:</th>
+                    <th>less 10Mb</th>
+                    <th>10Mb~50Mb</th>
+                    <th>more 100Mb</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Count:</td>
+                    <td>{{ Items.SmallFilesCount }}</td>
+                    <td>{{ Items.MediumFilesCount }}</td>
+                    <td>{{ Items.LargeFilesCount }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="current-path">
+            <span class="label label-primary">Path: {{ Items.Path }}</span>
+        </p>
+        <ul class="list-unstyled Directory-content">
+            <li ng-repeat="file in Items.Directories"><a ng-click="open(file.Path)">{{ file.Name }}</a></li>
+            <li ng-repeat="file in Items.Files"><a ng-href="?path={{ file.Path }}">{{ file.Name }}</a></li>
+        </ul>
+    </div>
+</div>
